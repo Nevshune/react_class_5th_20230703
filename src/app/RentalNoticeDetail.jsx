@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ButtonSlide from "../components/ButtonSlide";
 import Layout from "../components/Layout";
 import LayoutContents from "../components/LayoutContents";
 import SubTitle from "../components/SubTitle";
+import { useQuery } from "react-query";
+import { rentalNoticeDetail } from "../api";
 
 export default function RentalNoticeDetail() {
+    const { id } = useParams();
+    const { data } = useQuery(["noticeDetail", id], rentalNoticeDetail);
+    console.log(data);
     return (
         <div>
             <Layout>
@@ -21,7 +26,7 @@ export default function RentalNoticeDetail() {
                                         className="table_td border-l-0"
                                         colSpan={4}
                                     >
-                                        와 리액트 너무 재미있다
+                                        {data?.detail.title}
                                     </td>
                                 </tr>
                                 <tr>
@@ -35,7 +40,7 @@ export default function RentalNoticeDetail() {
                                         width="40%"
                                         className="table_td border-l-0"
                                     >
-                                        2023-06-16
+                                        {data?.detail.createdAt.substr(0, 10)}
                                     </td>
                                     <td
                                         width="10%"
@@ -54,7 +59,9 @@ export default function RentalNoticeDetail() {
                                     <td
                                         colSpan={4}
                                         className="table_td border-l-0"
-                                    ></td>
+                                    >
+                                        {data?.detail.description}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td

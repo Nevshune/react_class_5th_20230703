@@ -3,6 +3,9 @@ import Root from "./components/Root";
 import NotFound from "./app/NotFound";
 import Page from "./Page";
 import InformationTicket from "./app/InformationTicket";
+import RentalNotice from "./app/RentalNotice";
+import RentalNoticeWrite from "./app/RentalNoticeWrite";
+import RentalNoticeDetail from "./app/RentalNoticeDetail";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +24,24 @@ const router = createBrowserRouter([
                     {
                         path: "",
                         element: <InformationTicket />,
+                    },
+                ],
+            },
+            {
+                path: "rental",
+                element: <Root />,
+                children: [
+                    {
+                        path: "",
+                        element: <RentalNotice />,
+                    },
+                    {
+                        path: "notice-write",
+                        element: <RentalNoticeWrite />,
+                    },
+                    {
+                        path: "notice-detail/:id",
+                        element: <RentalNoticeDetail />,
                     },
                 ],
             },

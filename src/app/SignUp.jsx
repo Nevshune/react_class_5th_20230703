@@ -28,7 +28,7 @@ export default function SignUp() {
 
     const {
         register,
-        handleSubmit,
+        // handleSubmit,
         watch,
         formState: { errors },
     } = useForm({ mode: "onChange" });

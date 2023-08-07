@@ -4,6 +4,9 @@ import Layout from "../components/Layout";
 import LayoutContents from "../components/LayoutContents";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
+import DaumPostcodeEmbed from "react-daum-postcode";
+import { useMutation } from "react-query";
+import { userRegister } from "../api";
 
 export default function SignUp() {
     const customStyles = {
@@ -17,7 +20,8 @@ export default function SignUp() {
             transform: "translate(-50%, -50%)",
         },
     };
-
+    const [zipcode, setZipcode] = useState("");
+    const [addressDetail, setAddressDetail] = useState("");
     const [ModalISOpen, setIsOpen] = useState(false);
     const openModal = () => {
         setIsOpen(true);
@@ -28,10 +32,32 @@ export default function SignUp() {
 
     const {
         register,
-        // handleSubmit,
+        handleSubmit,
         watch,
+        reset,
         formState: { errors },
     } = useForm({ mode: "onChange" });
+
+    const handleComplete = (data) => {
+        setZipcode(data.zonecode);
+        setAddressDetail(data.address);
+        setIsOpen(false);
+    };
+
+    const { mutate } = useMutation(userRegister, {
+        onSuccess: () => {
+            reset();
+        },
+    });
+
+    const onSubmit = (data) => {
+        console.log(data);
+        mutate(data);
+    };
+
+    // console.log(zipcode);
+    // console.log(addressDetail);
+
     return (
         <div>
             <Layout>
@@ -39,9 +65,18 @@ export default function SignUp() {
                     isOpen={ModalISOpen}
                     style={customStyles}
                     onRequestClose={closeModal}
-                ></Modal>
+                >
+                    <div>우편번호</div>
+                    <DaumPostcodeEmbed onComplete={handleComplete} />
+                    <button
+                        className="border border-neutral-300 px-4 py-1 rounded-md hover:text-neutral-700 hover:border-neutral-700"
+                        onClick={closeModal}
+                    >
+                        Close
+                    </button>
+                </Modal>
                 <LayoutContents>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <table className="table_top w-full">
                             <tbody>
                                 <tr>
@@ -162,6 +197,7 @@ export default function SignUp() {
                                         <div className="space-x-1">
                                             <input
                                                 {...register("zipcode")}
+                                                value={zipcode}
                                                 disabled
                                                 type="text"
                                                 className="border border-neutral-300 p-2 bg-neutral-50"
@@ -177,6 +213,7 @@ export default function SignUp() {
                                         <div className=" space-y-1">
                                             <input
                                                 {...register("address1")}
+                                                value={addressDetail}
                                                 disabled
                                                 type="text"
                                                 className="border w-full border-neutral-300 p-2"
@@ -185,6 +222,7 @@ export default function SignUp() {
                                                 {...register("address2")}
                                                 type="text"
                                                 className="border border-neutral-300 p-2 w-full"
+                                                placeholder="상세주소 입력"
                                             />
                                         </div>
                                     </td>

@@ -3,6 +3,8 @@ const BASE_PATH =
         ? "https://port-0-reactproject-5-db-eu1k2lll07brk9.sel4.cloudtype.app"
         : "http://localhost:8080";
 
+//https://port-0-reactproject-5-db-eu1k2lll07brk9.sel4.cloudtype.app
+
 export async function rentalNotices() {
     return await fetch(`${BASE_PATH}/api/rental/notice`, {
         method: "GET",
@@ -27,6 +29,17 @@ export async function rentalNoticeDetail(props) {
 export async function rentalNoticeWrite(props) {
     // console.log(props);
     return await fetch(`${BASE_PATH}/api/rental/notice-write`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(props),
+    }).then((res) => res.json());
+}
+
+export async function userRegister(props) {
+    return await fetch(`${BASE_PATH}/api/users/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

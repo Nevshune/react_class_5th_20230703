@@ -1,4 +1,7 @@
-const BASE_PATH = "http://localhost:8080";
+const BASE_PATH =
+    process.env.NODE_ENV === "production"
+        ? "https://port-0-reactproject-5-db-eu1k2lll07brk9.sel4.cloudtype.app/"
+        : "http://localhost:8080";
 
 export async function rentalNotices() {
     return await fetch(`${BASE_PATH}/api/rental/notice`, {

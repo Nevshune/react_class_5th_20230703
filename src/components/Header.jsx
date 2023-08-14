@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import LogoAsset from "./asset/LogoAsset";
 import SearchAsset from "./asset/SearchAsset";
+import useUser from "../hooks/useUser";
 
 const GNB = [
     {
@@ -36,6 +37,8 @@ const GNB = [
 ];
 
 export default function Header() {
+    const { userLoading, isLoggedIn, user } = useUser();
+    console.log(userLoading, isLoggedIn, user);
     const temp = "w-full flex justify-center h-header-height shadow-md";
     return (
         <div className={temp}>
@@ -69,10 +72,21 @@ export default function Header() {
                             <SearchAsset />
                         </div>
                         <div>HOME</div>
-                        <div>Login</div>
-                        <Link to="/signup">
-                            <div>Join</div>
-                        </Link>
+                        {isLoggedIn === "true" ? (
+                            <>
+                                <Link to="/signin">
+                                    <div>Login</div>
+                                </Link>
+                                <Link to="/signup">
+                                    <div>Join</div>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <div>{user.username} 님</div>
+                                <div>로그아웃</div>
+                            </>
+                        )}
                         <select
                             size="sm"
                             className="border border-neutral-300 text-sm rounded-sm py-1 px-2"
